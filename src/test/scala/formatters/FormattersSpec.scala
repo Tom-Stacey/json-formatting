@@ -53,6 +53,23 @@ class FormattersSpec extends WordSpec with Matchers with JsonValidationTestHelpe
         val res = Json.fromJson[PersonalDetails](json)
         shouldHaveErrors(res, JsPath(), Seq(ValidationError("Neither star sign nor preferred wrench provided")))
       }
+
+      "First name is not capitalised"in {
+        val json = Json.parse(
+          """
+            |{
+            |  "name":"thomas",
+            |  "last-name":"Stacey",
+            |  "other-name":"Anthony",
+            |  "favoured-wrench":"torque wrench",
+            |  "date-of-birth":"2000/03/15"
+            |}
+          """.stripMargin
+        )
+
+        val res = Json.fromJson[PersonalDetails](json)
+        shouldHaveErrors(res, JsPath() \ "name", Seq(ValidationError("non-capitalised first name")))
+      }
     }
   }
 
