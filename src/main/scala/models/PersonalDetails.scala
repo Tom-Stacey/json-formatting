@@ -10,6 +10,8 @@ case class PersonalDetails(
                             firstName: String,
                             surname: String,
                             middleName: Option[String],
+                            starSign: Option[String],
+                            favouriteWrench: Option[String],
                             dob: LocalDate
                           )
 
@@ -30,6 +32,8 @@ object PersonalDetails {
       (__ \ "name").format[String] and
       (__ \ "last-name").format[String] and
       (__ \ "other-name").formatNullable[String] and
+      (__ \ "star-sign").formatNullable[String] and
+      (__ \ "favoured-wrench").formatNullable[String] and
       (__ \ "date-of-birth").format[LocalDate](dateFormat)
     )(PersonalDetails.apply, unlift(PersonalDetails.unapply))
 }
