@@ -11,5 +11,10 @@ case class PersonalDetails(
                           )
 
 object PersonalDetails {
-  implicit val format = Json.format[PersonalDetails]
+  implicit val format = (
+      (__ \ "name").format[String] and
+      (__ \ "last-name").format[String] and
+      (__ \ "other-name").formatNullable[String] and
+      (__ \ "date-of-birth").format[String]
+    )(PersonalDetails.apply, unlift(PersonalDetails.unapply))
 }
