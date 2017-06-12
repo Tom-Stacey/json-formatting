@@ -1,6 +1,7 @@
 package models
 
 import java.time.LocalDate
+import java.time.format.DateTimeFormatter
 
 import play.api.libs.functional.syntax._
 import play.api.libs.json._
@@ -13,10 +14,22 @@ case class PersonalDetails(
                           )
 
 object PersonalDetails {
+
+  val dateFmt = DateTimeFormatter.ofPattern("yyyy/MM/dd")
+  val dateReads = Reads[LocalDate]( js =>
+    js.validate[String].map[LocalDate]( dtString =>
+      LocalDate.parse(dtString, dateFmt)
+    )
+  )
+  val dateWrites = Writes[LocalDate](dt =>
+    JsString(dt.toString)
+  )
+  val dateFormat: Format[LocalDate] = Format(dateReads, dateWrites)
+
   implicit val format = (
       (__ \ "name").format[String] and
       (__ \ "last-name").format[String] and
       (__ \ "other-name").formatNullable[String] and
-      (__ \ "date-of-birth").format[LocalDate]
+      (__ \ "date-of-birth").format[LocalDate](dateFormat)
     )(PersonalDetails.apply, unlift(PersonalDetails.unapply))
 }
