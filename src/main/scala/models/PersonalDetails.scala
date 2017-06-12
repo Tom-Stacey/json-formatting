@@ -18,8 +18,12 @@ case class PersonalDetails(
 
 object PersonalDetails {
 
+  private val nameReads = Reads.StringReads
+    .filter(ValidationError("non-capitalised first name"))(_.head.isUpper)
+  private val nameFormat: Format[String] = Format(nameReads, Writes.StringWrites)
+
   implicit val format = (
-      (__ \ "name").format[String] and
+      (__ \ "name").format[String](nameFormat) and
       (__ \ "last-name").format[String] and
       (__ \ "other-name").formatNullable[String] and
       (__ \ "star-sign").formatNullable[String] and
