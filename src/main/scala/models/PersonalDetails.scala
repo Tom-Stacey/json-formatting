@@ -9,3 +9,6 @@ case class PersonalDetails(
                             dob: String
                           )
 
+object PersonalDetails {
+  implicit val format = Json.format[PersonalDetails]
+}
