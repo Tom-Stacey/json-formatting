@@ -11,10 +11,10 @@ class FormattersSpec extends WordSpec with Matchers {
       val json = Json.parse(
         """
           |{
-          |  "firstName":"Thomas",
-          |  "surname":"Stacey",
-          |  "middleName":"Anthony",
-          |  "dob":"2000/03/15"
+          |  "name":"Thomas",
+          |  "last-name":"Stacey",
+          |  "other-name":"Anthony",
+          |  "date-of-birth":"2000/03/15"
           |}
         """.stripMargin
       )
